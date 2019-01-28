@@ -5,7 +5,7 @@ import { cloneDeep } from 'lodash';
 
 import { CloneDialog } from '..';
 
-import { clone, cloneDisks } from '../../../../k8s/clone';
+import { clone } from '../../../../k8s/clone';
 import { default as CloneDialogFixture } from '../fixtures/CloneDialog.fixture';
 import { cloudInitTestVm } from '../../../../tests/mocks/vm/cloudInitTestVm.mock';
 import { Text, TextArea, Dropdown, Checkbox } from '../../../Form';
@@ -108,10 +108,6 @@ describe('<CloneDialog />', () => {
     let component = mount(testCloneDialog());
 
     clone.mockReturnValue(new Promise((resolve, reject) => resolve()));
-    cloneDisks.mockReturnValue([
-      { promise: Promise.resolve({ metadata: { name: '1' } }) },
-      { promise: Promise.resolve({ metadata: { name: '2' } }) },
-    ]);
 
     clickCloneVm(component);
 
@@ -142,10 +138,6 @@ describe('<CloneDialog />', () => {
 
   it('show error when clone fails', async () => {
     clone.mockReturnValue(Promise.reject(new Error('fooError')));
-    cloneDisks.mockReturnValue([
-      { promise: Promise.resolve({ metadata: { name: '1' } }) },
-      { promise: Promise.resolve({ metadata: { name: '2' } }) },
-    ]);
     const component = mount(testCloneDialog());
 
     clickCloneVm(component);

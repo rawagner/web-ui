@@ -14,7 +14,7 @@ export default [
     name: 'Error',
     props: {
       success: false,
-      result: 'Failed',
+      result: ['Failed'],
     },
   },
   {
@@ -22,7 +22,7 @@ export default [
     name: 'Success',
     props: {
       success: true,
-      result: 'Finished succesfully',
+      result: ['Finished succesfully'],
     },
   },
 ];

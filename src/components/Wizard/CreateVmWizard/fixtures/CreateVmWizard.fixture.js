@@ -2,7 +2,7 @@ import { CreateVmWizard } from '../CreateVmWizard';
 import { ProcessedTemplatesModel } from '../../../../models';
 import { networkConfigs } from '../../../../tests/mocks/networkAttachmentDefinition';
 import { baseTemplates } from '../../../../tests/mocks/template';
-import { userTemplates } from '../../../../tests/mocks/user_template';
+import { userTemplates, urlTemplateDataVolume } from '../../../../tests/mocks/user_template/url.mock';
 import { persistentVolumeClaims } from '../../../../tests/mocks/persistentVolumeClaim';
 
 const templates = [...baseTemplates, ...userTemplates];
@@ -75,6 +75,7 @@ export default [
       persistentVolumeClaims,
       storageClasses,
       units,
+      dataVolumes: [urlTemplateDataVolume],
     },
   },
   {
@@ -90,6 +91,7 @@ export default [
       persistentVolumeClaims,
       storageClasses,
       units,
+      dataVolumes: [urlTemplateDataVolume],
     },
   },
   {
@@ -104,6 +106,7 @@ export default [
       persistentVolumeClaims: null,
       storageClasses: null,
       units,
+      dataVolumes: null,
     },
   },
   {
@@ -119,6 +122,7 @@ export default [
       storageClasses,
       units,
       createTemplate: true,
+      dataVolumes: [urlTemplateDataVolume],
     },
   },
 ];
