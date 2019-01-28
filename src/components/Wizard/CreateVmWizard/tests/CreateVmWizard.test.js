@@ -31,7 +31,8 @@ import {
   pxeDataVolumeTemplate,
   containerMultusTemplate,
   urlNoNetworkTemplate,
-} from '../../../../k8s/mock_user_templates';
+} from '../../../../tests/mocks/user_template';
+import { getButton } from '../../../../tests/enzyme';
 
 jest.mock('../../../../k8s/request');
 
@@ -51,7 +52,7 @@ const testCreateVmWizard = (type, template) => {
   return <CreateVmWizard {...props} createTemplate={template} />;
 };
 
-const getBackButton = component => component.find('.btn').findWhere(btn => btn.text() === 'Back');
+const getBackButton = component => getButton(component, 'Back');
 const getNextButton = component => component.find('.btn-primary');
 
 const getStepIndex = (steps, key) => findIndex(steps, step => step.key === key);
