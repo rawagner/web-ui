@@ -101,6 +101,7 @@ export const createVmTemplate = (k8sCreate, templates, basicSettings, networks, 
 export const createVm = (k8sCreate, templates, basicSettings, networks, storage, persistentVolumeClaims) => {
   const getSetting = settingsValue.bind(undefined, basicSettings);
   const template = getModifiedVmTemplate(templates, basicSettings, getSetting, networks, storage);
+  template.metadata.namespace = settingsValue(basicSettings, NAMESPACE_KEY);
   return k8sCreate(ProcessedTemplatesModel, template).then(({ objects }) => {
     const vm = selectVm(objects);
 
