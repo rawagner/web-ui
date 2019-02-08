@@ -42,7 +42,7 @@ import {
   PROVISION_SOURCE_URL,
   CUSTOM_FLAVOR,
 } from '../../../../constants';
-import { urlTemplateDataVolume } from '../../../../k8s/mock_user_templates/url.mock';
+import { urlTemplateDataVolume } from '../../../../tests/mocks/user_template/url.mock';
 
 const templates = [...baseTemplates, ...userTemplates];
 

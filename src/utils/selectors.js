@@ -18,6 +18,7 @@ import {
 export const getId = value => `${getNamespace(value)}/${getName(value)}`;
 export const getName = value => get(value, 'metadata.name');
 export const getNamespace = value => get(value, 'metadata.namespace');
+export const getLabels = value => get(value, 'metadata.labels');
 
 export const getGibStorageSize = (units, resources) => {
   const size = get(resources, 'requests.storage');

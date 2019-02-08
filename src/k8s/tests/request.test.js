@@ -38,7 +38,7 @@ import {
   WORKLOAD_PROFILE_KEY,
   DESCRIPTION_KEY,
 } from '../../components/Wizard/CreateVmWizard/constants';
-import { getNamespace, getName } from '../../utils';
+import { getNamespace, getName, generateDiskName } from '../../utils';
 
 import {
   basicSettingsCloudInit,

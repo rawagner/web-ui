@@ -8,12 +8,8 @@ import { addDisk, addDataVolumeTemplate, addDataVolume, addPvcVolume, getDataVol
 import { pvcDisk, dataVolumeTemplate, dataVolumeDisk } from '../../tests/forms_mocks/disk.mock';
 import { persistentVolumeClaims } from '../../tests/mocks/persistentVolumeClaim';
 import { dataVolumes } from '../../tests/mocks/dataVolume';
-import { k8sCreate } from '../../tests/k8sCreate';
+import { k8sCreate, k8sPatch } from '../../tests/k8s';
 import { DATA_VOLUME_SOURCE_BLANK } from '../../components/Wizard/CreateVmWizard/constants';
-
-const k8sCreate = (model, resource) => Promise.resolve(resource);
-
-const k8sPatch = (model, instance, patch) => Promise.resolve(instance);
 
 describe('clone.js - cloneVm', () => {
   it('clone vm without devices', async () => {

@@ -3,8 +3,6 @@ import { get, includes } from 'lodash';
 import {
   VM_STATUS_POD_ERROR,
   VM_STATUS_ERROR,
-  VM_STATUS_IMPORT_ERROR,
-  VM_STATUS_IMPORTING,
   VM_STATUS_MIGRATING,
   VM_STATUS_OFF,
   VM_STATUS_RUNNING,
@@ -12,7 +10,19 @@ import {
   VM_STATUS_VMI_WAITING,
   VM_STATUS_UNKNOWN,
   VM_STATUS_OTHER,
+  VM_STATUS_DISKS_FAILED,
+  VM_STATUS_PREPARING_DISKS,
+  DATA_VOLUME_STATUS_PENDING,
+  DATA_VOLUME_STATUS_PVC_BOUND,
+  DATA_VOLUME_STATUS_CLONE_SCHEDULED,
+  DATA_VOLUME_STATUS_UPLOAD_SCHEDULED,
+  DATA_VOLUME_STATUS_IMPORT_SCHEDULED,
+  DATA_VOLUME_STATUS_CLONE_IN_PROGRESS,
+  DATA_VOLUME_STATUS_UPLOAD_IN_PROGRESS,
+  DATA_VOLUME_STATUS_IMPORT_IN_PROGRESS,
+  DATA_VOLUME_STATUS_FAILED,
 } from '../../constants';
+import { getName, getNamespace, getVolumes, getLabels } from '../../utils';
 
 const NOT_HANDLED = null;
 
@@ -99,47 +109,7 @@ const isVmError = vm => {
   return NOT_HANDLED;
 };
 
-const isBeingImported = (vm, importerPods) => {
-  if (importerPods && importerPods.length > 0 && !get(vm, 'status.created', false)) {
-    const importerPodsStatuses = importerPods.map(pod => {
-      if (!isSchedulable(pod)) {
-        return {
-          status: VM_STATUS_IMPORT_ERROR,
-          message: 'Importer pod scheduling failed.',
-          pod,
-        };
-      }
-
-      const failingContainer = getFailingContainerStatus(pod);
-      if (failingContainer) {
-        return {
-          status: VM_STATUS_IMPORT_ERROR,
-          message: getContainerStatusReason(failingContainer),
-          pod,
-        };
-      }
-      return {
-        status: VM_STATUS_IMPORTING,
-        message: getNotRedyConditionMessage(pod),
-        pod,
-      };
-    });
-    const importErrorStatus = importerPodsStatuses.find(status => status.status === VM_STATUS_IMPORT_ERROR);
-    const message = importerPodsStatuses
-      .map(podStatus => `${podStatus.pod.metadata.name}: ${podStatus.message}`)
-      .join('\n\n');
-
-    return {
-      status: importErrorStatus ? importErrorStatus.status : VM_STATUS_IMPORTING,
-      message,
-      pod: importErrorStatus ? importErrorStatus.pod : importerPods[0],
-      importerPodsStatuses,
-    };
-  }
-  return NOT_HANDLED;
-};
-
-export const isBeingMigrated = (vm, migration) => {
+export const isBeingMigrated = migration => {
   if (migration) {
     if (!isMigrationStatus(migration, 'succeeded') && !isMigrationStatus(migration, 'failed')) {
       return { status: VM_STATUS_MIGRATING, message: get(migration, 'status.phase') };
@@ -156,17 +126,131 @@ const isWaitingForVmi = vm => {
   return NOT_HANDLED;
 };
 
-export const getVmStatusDetail = (vm, launcherPod, importerPods, migration) =>
-  isBeingMigrated(vm, migration) || // must be precceding isRunning() since vm.status.ready is true for a migrating VM
+const findCdiPod = (volume, cdiPods = []) =>
+  cdiPods.find(pod => {
+    const podName = getName(pod);
+    const dataVolumeName = volume.dataVolume.name;
+    // upload dataVolume pod
+    if (podName === `cdi-upload-${dataVolumeName}`) {
+      return true;
+    }
+    // import dataVolume pod
+    const importerPodName = `importer-${dataVolumeName}-`;
+    if (podName.startsWith(importerPodName) && podName.length === importerPodName.length + 5) {
+      return true;
+    }
+    // clone dataVolume pod
+    if (getLabels(pod)['cdi.kubevirt.io/storage.clone.cloneUniqeId'] === `${dataVolumeName}-target-pod`) {
+      return true;
+    }
+    return false;
+  });
+
+const getPodError = cdiPod => {
+  if (cdiPod) {
+    if (!isSchedulable(cdiPod)) {
+      return 'Pod scheduling failed.';
+    }
+
+    const failingContainer = getFailingContainerStatus(cdiPod);
+    if (failingContainer) {
+      return getContainerStatusReason(failingContainer);
+    }
+  }
+  return NOT_HANDLED;
+};
+
+export const isPreparingDisks = (vm, cdiPods, dataVolumes) => {
+  const diskStatuses = [];
+  if (dataVolumes) {
+    const dataVolumeVolumes = getVolumes(vm).filter(v => v.dataVolume);
+    dataVolumeVolumes.forEach(volume => {
+      const dVolume = dataVolumes.find(
+        dv => getName(dv) === volume.dataVolume.name && getNamespace(dv) === getNamespace(vm)
+      );
+      if (dVolume) {
+        const pod = findCdiPod(volume, cdiPods);
+        const podError = getPodError(pod);
+        const diskStatus = {
+          diskName: volume.name,
+          pod,
+        };
+        if (podError) {
+          diskStatuses.push({
+            ...diskStatus,
+            status: VM_STATUS_DISKS_FAILED,
+            message: podError,
+          });
+        } else {
+          switch (get(dVolume, 'status.phase')) {
+            case DATA_VOLUME_STATUS_PENDING:
+            case DATA_VOLUME_STATUS_PVC_BOUND:
+              diskStatuses.push({
+                ...diskStatus,
+                status: VM_STATUS_PREPARING_DISKS,
+                diskStatus: DATA_VOLUME_STATUS_PENDING,
+              });
+              break;
+            case DATA_VOLUME_STATUS_CLONE_SCHEDULED:
+            case DATA_VOLUME_STATUS_CLONE_IN_PROGRESS:
+              diskStatuses.push({
+                ...diskStatus,
+                status: VM_STATUS_PREPARING_DISKS,
+                diskStatus: DATA_VOLUME_STATUS_CLONE_IN_PROGRESS,
+              });
+              break;
+            case DATA_VOLUME_STATUS_UPLOAD_SCHEDULED:
+            case DATA_VOLUME_STATUS_UPLOAD_IN_PROGRESS:
+              diskStatuses.push({
+                ...diskStatus,
+                status: VM_STATUS_PREPARING_DISKS,
+                diskStatus: DATA_VOLUME_STATUS_UPLOAD_IN_PROGRESS,
+              });
+              break;
+            case DATA_VOLUME_STATUS_IMPORT_SCHEDULED:
+            case DATA_VOLUME_STATUS_IMPORT_IN_PROGRESS:
+              diskStatuses.push({
+                ...diskStatus,
+                status: VM_STATUS_PREPARING_DISKS,
+                diskStatus: DATA_VOLUME_STATUS_IMPORT_IN_PROGRESS,
+              });
+              break;
+            case DATA_VOLUME_STATUS_FAILED:
+              diskStatuses.push({
+                ...diskStatus,
+                status: VM_STATUS_DISKS_FAILED,
+                diskStatus: DATA_VOLUME_STATUS_FAILED,
+                message: `Failed preparing ${volume.name} disk`,
+              });
+              break;
+            default:
+              break;
+          }
+        }
+      }
+    });
+  }
+  if (diskStatuses.length === 1) {
+    return diskStatuses[0];
+  }
+  if (diskStatuses.length > 1) {
+    const failedDiskStatus = diskStatuses.find(ds => ds.status === VM_STATUS_DISKS_FAILED);
+    return failedDiskStatus || { status: VM_STATUS_PREPARING_DISKS };
+  }
+  return NOT_HANDLED;
+};
+
+export const getVmStatusDetail = (vm, launcherPod, cdiPods, migration, dataVolumes) =>
+  isBeingMigrated(migration) || // must be precceding isRunning() since vm.status.ready is true for a migrating VM
   isRunning(vm) ||
   isReady(vm) ||
   isVmError(vm) ||
   isCreated(vm, launcherPod) ||
-  isBeingImported(vm, importerPods) ||
+  isPreparingDisks(vm, cdiPods, dataVolumes) ||
   isWaitingForVmi(vm) || { status: VM_STATUS_UNKNOWN };
 
-export const getVmStatus = (vm, launcherPod, importerPods, migration) => {
-  const vmStatus = getVmStatusDetail(vm, launcherPod, importerPods, migration).status;
+export const getVmStatus = (vm, launcherPod, cdiPods, migration, dataVolumes) => {
+  const vmStatus = getVmStatusDetail(vm, launcherPod, cdiPods, migration, dataVolumes).status;
   return vmStatus === VM_STATUS_OFF || vmStatus === VM_STATUS_RUNNING ? vmStatus : VM_STATUS_OTHER;
 };
 

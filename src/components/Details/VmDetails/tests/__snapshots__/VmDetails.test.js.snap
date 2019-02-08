@@ -61,13 +61,11 @@ exports[`<VmDetails /> does not render CPU and Memory settings for VM without cu
               Status
             </dt>
             <dd>
-              <div>
-                <span
-                  aria-hidden="true"
-                  class="kubevirt-vm-status__icon pficon pficon-off"
-                />
-                Off
-              </div>
+              <span
+                aria-hidden="true"
+                class="kubevirt-vm-status__icon pficon pficon-off"
+              />
+              Off
             </dd>
             <dt>
               Operating System
@@ -211,13 +209,11 @@ exports[`<VmDetails /> renders CPU and Memory settings for VM with custom flavor
               Status
             </dt>
             <dd>
-              <div>
-                <span
-                  aria-hidden="true"
-                  class="kubevirt-vm-status__icon pficon pficon-off"
-                />
-                Off
-              </div>
+              <span
+                aria-hidden="true"
+                class="kubevirt-vm-status__icon pficon pficon-off"
+              />
+              Off
             </dd>
             <dt>
               Operating System
@@ -377,13 +373,11 @@ exports[`<VmDetails /> renders IP addresses correctly 1`] = `
               Status
             </dt>
             <dd>
-              <div>
-                <span
-                  aria-hidden="true"
-                  class="kubevirt-vm-status__icon pficon pficon-on-running"
-                />
-                Running
-              </div>
+              <span
+                aria-hidden="true"
+                class="kubevirt-vm-status__icon pficon pficon-on-running"
+              />
+              Running
             </dd>
             <dt>
               Operating System
@@ -527,13 +521,11 @@ exports[`<VmDetails /> renders correctly 1`] = `
               Status
             </dt>
             <dd>
-              <div>
-                <span
-                  aria-hidden="true"
-                  class="kubevirt-vm-status__icon pficon pficon-off"
-                />
-                Off
-              </div>
+              <span
+                aria-hidden="true"
+                class="kubevirt-vm-status__icon pficon pficon-off"
+              />
+              Off
             </dd>
             <dt>
               Operating System
@@ -677,13 +669,11 @@ exports[`<VmDetails /> renders description correctly 1`] = `
               Status
             </dt>
             <dd>
-              <div>
-                <span
-                  aria-hidden="true"
-                  class="kubevirt-vm-status__icon pficon pficon-off"
-                />
-                Off
-              </div>
+              <span
+                aria-hidden="true"
+                class="kubevirt-vm-status__icon pficon pficon-off"
+              />
+              Off
             </dd>
             <dt>
               Operating System
@@ -827,13 +817,11 @@ exports[`<VmDetails /> renders off status correctly 1`] = `
               Status
             </dt>
             <dd>
-              <div>
-                <span
-                  aria-hidden="true"
-                  class="kubevirt-vm-status__icon pficon pficon-off"
-                />
-                Off
-              </div>
+              <span
+                aria-hidden="true"
+                class="kubevirt-vm-status__icon pficon pficon-off"
+              />
+              Off
             </dd>
             <dt>
               Operating System
@@ -991,13 +979,11 @@ exports[`<VmDetails /> renders on status correctly 1`] = `
               Status
             </dt>
             <dd>
-              <div>
-                <span
-                  aria-hidden="true"
-                  class="kubevirt-vm-status__icon pficon pficon-on-running"
-                />
-                Running
-              </div>
+              <span
+                aria-hidden="true"
+                class="kubevirt-vm-status__icon pficon pficon-on-running"
+              />
+              Running
             </dd>
             <dt>
               Operating System
@@ -1141,13 +1127,11 @@ exports[`<VmDetails /> renders values from labels correctly 1`] = `
               Status
             </dt>
             <dd>
-              <div>
-                <span
-                  aria-hidden="true"
-                  class="kubevirt-vm-status__icon pficon pficon-off"
-                />
-                Off
-              </div>
+              <span
+                aria-hidden="true"
+                class="kubevirt-vm-status__icon pficon pficon-off"
+              />
+              Off
             </dd>
             <dt>
               Operating System

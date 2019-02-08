@@ -13,7 +13,7 @@ import { getName, getDescription, getNamespace } from '../../../../utils';
 import { VIRTUAL_MACHINE_EXISTS } from '../../../../utils/strings';
 import { settingsValue } from '../../../../k8s/selectors';
 import { DESCRIPTION_KEY, NAME_KEY, NAMESPACE_KEY } from '../../../Wizard/CreateVmWizard/constants';
-import { k8sCreate } from '../../../../tests/k8sCreate';
+import { k8sCreate } from '../../../../tests/k8s';
 import { flushPromises, setCheckbox, setInput, clickButton, selectDropdownItem } from '../../../../tests/enzyme';
 
 jest.mock('../../../../k8s/clone');

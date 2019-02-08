@@ -50,13 +50,13 @@ export const VM_STATUS_OFF = 'VM_STATUS_OFF';
 export const VM_STATUS_RUNNING = 'VM_STATUS_RUNNING';
 export const VM_STATUS_STARTING = 'VM_STATUS_STARTING';
 export const VM_STATUS_VMI_WAITING = 'VM_STATUS_VMI_WAITING';
-export const VM_STATUS_IMPORTING = 'VM_STATUS_IMPORTING';
 export const VM_STATUS_POD_ERROR = 'VM_STATUS_POD_ERROR';
 export const VM_STATUS_ERROR = 'VM_STATUS_ERROR';
-export const VM_STATUS_IMPORT_ERROR = 'VM_STATUS_IMPORT_ERROR';
 export const VM_STATUS_UNKNOWN = 'VM_STATUS_UNKNOWN';
 export const VM_STATUS_MIGRATING = 'VM_STATUS_MIGRATING';
 export const VM_STATUS_OTHER = 'VM_STATUS_OTHER'; // used for grouping filters
+export const VM_STATUS_PREPARING_DISKS = 'VM_STATUS_PREPARING_DISKS';
+export const VM_STATUS_DISKS_FAILED = 'VM_STATUS_DISKS_FAILED';
 
 export const VM_STATUS_ALL = [VM_STATUS_RUNNING, VM_STATUS_OFF, VM_STATUS_OTHER];
 
@@ -71,3 +71,13 @@ export const DASHES = '---';
 
 export const CDI_KUBEVIRT_IO = 'cdi.kubevirt.io';
 export const STORAGE_IMPORT_PVC_NAME = 'storage.import.importPvcName';
+
+export const DATA_VOLUME_STATUS_PENDING = 'Pending';
+export const DATA_VOLUME_STATUS_PVC_BOUND = 'PVCBound';
+export const DATA_VOLUME_STATUS_CLONE_SCHEDULED = 'CloneScheduled';
+export const DATA_VOLUME_STATUS_IMPORT_SCHEDULED = 'ImportScheduled';
+export const DATA_VOLUME_STATUS_UPLOAD_SCHEDULED = 'UploadScheduled';
+export const DATA_VOLUME_STATUS_CLONE_IN_PROGRESS = 'CloneInProgress';
+export const DATA_VOLUME_STATUS_UPLOAD_IN_PROGRESS = 'UploadInProgress';
+export const DATA_VOLUME_STATUS_IMPORT_IN_PROGRESS = 'ImportInProgress';
+export const DATA_VOLUME_STATUS_FAILED = 'Failed';
