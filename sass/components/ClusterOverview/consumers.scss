@@ -1,10 +1,52 @@
-.kubevirt-consumers__bar .progress {
+.kubevirt-consumers__bar {
+  height: 20px;
+  margin-top: 10px;
+}
+
+.kubevirt-consumers__bar-progress {
   height: 10px;
-  margin-top: 15px;
+  margin: 4px 0;
+}
+
+.kubevirt-consumers__bar-column-progress {
+  padding: 0;
+}
+
+.kubevirt-consumers__bar-description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #030303;
+  font-size: 12px;
+}
+
+.kubevirt-consumers__bar-label {
+  text-align: right;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kubevirt-consumers__metric-description {
+  text-align: left;
+  padding: 0;
+}
+
+.kubevirt-consumers__metric-type {
+  text-align: left;
 }
 
 .kubevirt-consumers__filters {
   display: flex;
   padding-bottom: 10px;
   border-bottom: 1px solid #d1d1d1;
+}
+
+.kubevirt-consumers__results {
+  text-align: center;
+}
+
+.kubevirt-consumers__description {
+  margin-top: 10px;
 }

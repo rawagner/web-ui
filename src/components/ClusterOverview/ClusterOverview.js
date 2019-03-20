@@ -13,7 +13,7 @@ import EventsConnected from './Events/Events';
 import InventoryConnected from './Inventory/Inventory';
 import CapacityConnected from './Capacity/Capacity';
 import UtilizationConnected from './Utilization/Utilization';
-import TopConsumersConnected from './TopConsumers/TopConsumers';
+import { ClusterTopConsumersConnected } from './TopConsumers/ClusterTopConsumers';
 
 const MainCards = () => (
   <GridItem lg={6} md={12} sm={12}>
@@ -54,7 +54,7 @@ const RightCards = () => (
         <EventsConnected />
       </GridItem>
       <GridItem lg={12} md={6} sm={12}>
-        <TopConsumersConnected />
+        <ClusterTopConsumersConnected />
       </GridItem>
     </Grid>
   </GridItem>

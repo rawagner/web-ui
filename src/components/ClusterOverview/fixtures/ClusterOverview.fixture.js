@@ -5,6 +5,7 @@ import { healthData } from '../Health/fixtures/Health.fixture';
 import { eventsData } from '../Events/fixtures/Events.fixture';
 import { consumersData } from '../TopConsumers/fixtures/TopConsumers.fixture';
 import { capacityStats, emptyCapacityStats } from '../Capacity/fixtures/Capacity.fixture';
+
 import { clusterDetailsData } from '../Details/fixtures/ClusterDetails.fixture';
 
 import { complianceData, utilizationStats } from '..';
@@ -59,7 +60,12 @@ export default [
       complianceData: { loaded: false },
       eventsData: { loaded: false },
       utilizationStats: { loaded: false },
+<<<<<<< HEAD
       consumersData: { loaded: false },
+=======
+      consumersData: {},
+      inventoryData: { loaded: false },
+>>>>>>> Refactor TopConsumers and add new ClusterTopConsumers component
     },
   },
 ];

@@ -239,3 +239,14 @@ export const ConfigMapModel = {
   id: 'configmap',
   labelPlural: 'Config Maps',
 };
+
+export const NodeModel = {
+  apiVersion: 'v1',
+  label: 'Node',
+  path: 'nodes',
+  plural: 'nodes',
+  abbr: 'N',
+  kind: 'Node',
+  id: 'node',
+  labelPlural: 'Nodes',
+};
