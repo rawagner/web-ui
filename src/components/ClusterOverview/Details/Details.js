@@ -12,46 +12,56 @@ import { InlineLoading } from '../../Loading';
 import { getClusterName, getInfrastructurePlatform, getOpenshiftVersion } from '../../../selectors';
 import { DetailItem } from '../../Dashboard/Details/DetailItem';
 import { DetailsBody } from '../../Dashboard/Details/DetailsBody';
+import { PureCard } from '../PureCard';
 
-export const Details = ({ infrastructure, openshiftClusterVersions, LoadingComponent }) => (
-  <DashboardCard>
-    <DashboardCardHeader>
-      <DashboardCardTitle>Details</DashboardCardTitle>
-    </DashboardCardHeader>
-    <DashboardCardBody>
-      <DetailsBody>
-        <DetailItem
-          key="name"
-          title="Name"
-          value={getClusterName(infrastructure)}
-          isLoading={!infrastructure}
-          LoadingComponent={LoadingComponent}
-        />
-        <DetailItem
-          key="provider"
-          title="Provider"
-          value={getInfrastructurePlatform(infrastructure)}
-          isLoading={!infrastructure}
-          LoadingComponent={LoadingComponent}
-        />
-        <DetailItem
-          key="rhhi"
-          title="RHHI version"
-          value="1.0" // this will be hardcoded for the demo
-          isLoading={false}
-          LoadingComponent={LoadingComponent}
-        />
-        <DetailItem
-          key="openshift"
-          title="Openshift version"
-          value={getOpenshiftVersion(openshiftClusterVersions)}
-          isLoading={!openshiftClusterVersions}
-          LoadingComponent={LoadingComponent}
-        />
-      </DetailsBody>
-    </DashboardCardBody>
-  </DashboardCard>
-);
+export class Details extends PureCard {
+  constructor(props) {
+    super(props, Object.keys(Details.propTypes));
+  }
+
+  render() {
+    const { infrastructure, openshiftClusterVersions, LoadingComponent } = this.props;
+    return (
+      <DashboardCard>
+        <DashboardCardHeader>
+          <DashboardCardTitle>Details</DashboardCardTitle>
+        </DashboardCardHeader>
+        <DashboardCardBody>
+          <DetailsBody>
+            <DetailItem
+              key="name"
+              title="Name"
+              value={getClusterName(infrastructure)}
+              isLoading={!infrastructure}
+              LoadingComponent={LoadingComponent}
+            />
+            <DetailItem
+              key="provider"
+              title="Provider"
+              value={getInfrastructurePlatform(infrastructure)}
+              isLoading={!infrastructure}
+              LoadingComponent={LoadingComponent}
+            />
+            <DetailItem
+              key="rhhi"
+              title="RHHI version"
+              value="1.0" // this will be hardcoded for the demo
+              isLoading={false}
+              LoadingComponent={LoadingComponent}
+            />
+            <DetailItem
+              key="openshift"
+              title="Openshift version"
+              value={getOpenshiftVersion(openshiftClusterVersions)}
+              isLoading={!openshiftClusterVersions}
+              LoadingComponent={LoadingComponent}
+            />
+          </DetailsBody>
+        </DashboardCardBody>
+      </DashboardCard>
+    );
+  }
+};
 
 Details.defaultProps = {
   infrastructure: null,

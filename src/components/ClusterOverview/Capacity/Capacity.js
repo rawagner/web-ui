@@ -14,64 +14,74 @@ import { CapacityItem } from '../../Dashboard/Capacity/CapacityItem';
 import { formatBytes, formatCores, formatNetTraffic } from '../../../utils';
 import { getCapacityStats } from '../../../selectors';
 import { CapacityBody } from '../../Dashboard/Capacity/CapacityBody';
+import { PureCard } from '../PureCard';
 
-export const Capacity = ({
-  cpuTotal,
-  cpuUsed,
-  memoryTotal,
-  memoryUsed,
-  storageTotal,
-  storageUsed,
-  networkTotal,
-  networkUsed,
-  LoadingComponent,
-}) => (
-  <DashboardCard>
-    <DashboardCardHeader>
-      <DashboardCardTitle>Cluster Capacity</DashboardCardTitle>
-    </DashboardCardHeader>
-    <DashboardCardBody>
-      <CapacityBody>
-        <CapacityItem
-          id="cpu"
-          title="CPU"
-          used={getCapacityStats(cpuUsed)}
-          total={getCapacityStats(cpuTotal)}
-          formatValue={formatCores}
-          LoadingComponent={LoadingComponent}
-          isLoading={!(cpuUsed && cpuTotal)}
-        />
-        <CapacityItem
-          id="memory"
-          title="Memory"
-          used={getCapacityStats(memoryUsed)}
-          total={getCapacityStats(memoryTotal)}
-          formatValue={formatBytes}
-          LoadingComponent={LoadingComponent}
-          isLoading={!(memoryUsed && memoryTotal)}
-        />
-        <CapacityItem
-          id="storage"
-          title="Storage"
-          used={getCapacityStats(storageUsed)}
-          total={getCapacityStats(storageTotal)}
-          formatValue={formatBytes}
-          LoadingComponent={LoadingComponent}
-          isLoading={!(storageUsed && storageTotal)}
-        />
-        <CapacityItem
-          id="network"
-          title="Network"
-          used={getCapacityStats(networkUsed)}
-          total={getCapacityStats(networkTotal)}
-          formatValue={formatNetTraffic}
-          LoadingComponent={LoadingComponent}
-          isLoading={!(networkUsed && networkTotal)}
-        />
-      </CapacityBody>
-    </DashboardCardBody>
-  </DashboardCard>
-);
+export class Capacity extends PureCard {
+  constructor(props) {
+    super(props, Object.keys(Capacity.propTypes));
+  }
+  
+  render() {
+    const {
+      cpuTotal,
+      cpuUsed,
+      memoryTotal,
+      memoryUsed,
+      storageTotal,
+      storageUsed,
+      networkTotal,
+      networkUsed,
+      LoadingComponent,
+    } = this.props;
+    return (
+      <DashboardCard>
+        <DashboardCardHeader>
+          <DashboardCardTitle>Cluster Capacity</DashboardCardTitle>
+        </DashboardCardHeader>
+        <DashboardCardBody>
+          <CapacityBody>
+            <CapacityItem
+              id="cpu"
+              title="CPU"
+              used={getCapacityStats(cpuUsed)}
+              total={getCapacityStats(cpuTotal)}
+              formatValue={formatCores}
+              LoadingComponent={LoadingComponent}
+              isLoading={!(cpuUsed && cpuTotal)}
+            />
+            <CapacityItem
+              id="memory"
+              title="Memory"
+              used={getCapacityStats(memoryUsed)}
+              total={getCapacityStats(memoryTotal)}
+              formatValue={formatBytes}
+              LoadingComponent={LoadingComponent}
+              isLoading={!(memoryUsed && memoryTotal)}
+            />
+            <CapacityItem
+              id="storage"
+              title="Storage"
+              used={getCapacityStats(storageUsed)}
+              total={getCapacityStats(storageTotal)}
+              formatValue={formatBytes}
+              LoadingComponent={LoadingComponent}
+              isLoading={!(storageUsed && storageTotal)}
+            />
+            <CapacityItem
+              id="network"
+              title="Network"
+              used={getCapacityStats(networkUsed)}
+              total={getCapacityStats(networkTotal)}
+              formatValue={formatNetTraffic}
+              LoadingComponent={LoadingComponent}
+              isLoading={!(networkUsed && networkTotal)}
+            />
+          </CapacityBody>
+        </DashboardCardBody>
+      </DashboardCard>
+    );
+  }
+};
 
 Capacity.defaultProps = {
   cpuTotal: null,

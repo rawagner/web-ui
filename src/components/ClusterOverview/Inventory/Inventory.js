@@ -11,6 +11,7 @@ import {
 import { ClusterOverviewContext } from '../ClusterOverviewContext';
 import { mapNodesToProps, mapPodsToProps, mapPvcsToProps, mapVmsToProps } from './utils';
 import { InventoryRow } from '../../Dashboard/Inventory/InventoryRow';
+import { PureCard } from '../PureCard';
 
 const InventoryBody = ({ nodes, pods, vms, vmis, pvcs, migrations }) => (
   <React.Fragment>
@@ -39,17 +40,25 @@ InventoryBody.propTypes = {
   migrations: PropTypes.array,
 };
 
-export const Inventory = props => (
-  <DashboardCard>
-    <DashboardCardHeader>
-      <DashboardCardTitle>Cluster inventory</DashboardCardTitle>
-      <DashboardCardTitleHelp>help for inventory</DashboardCardTitleHelp>
-    </DashboardCardHeader>
-    <DashboardCardBody>
-      <InventoryBody {...props} />
-    </DashboardCardBody>
-  </DashboardCard>
-);
+export class Inventory extends PureCard {
+  constructor(props) {
+    super(props, Object.keys(Inventory.defaultProps));
+  }
+  
+  render() {
+    return (
+      <DashboardCard>
+        <DashboardCardHeader>
+          <DashboardCardTitle>Cluster inventory</DashboardCardTitle>
+          <DashboardCardTitleHelp>help for inventory</DashboardCardTitleHelp>
+        </DashboardCardHeader>
+        <DashboardCardBody>
+          <InventoryBody {...this.props} />
+        </DashboardCardBody>
+      </DashboardCard>
+    );
+  }
+};
 
 Inventory.defaultProps = {
   ...InventoryBody.defaultProps,
