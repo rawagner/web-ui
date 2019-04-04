@@ -11,7 +11,7 @@ import {
 } from '../../Dashboard/DashboardCard';
 import { ClusterOverviewContextGenericConsumer } from '../ClusterOverviewContext';
 
-const StorageTopConsumersBody = (stats) => (
+const StorageTopConsumersBody = ({ stats }) => (
   <div>
     <Row>
       <Col lg={7} md={7} sm={7} xs={7}>
@@ -19,12 +19,7 @@ const StorageTopConsumersBody = (stats) => (
           id="line-chart"
           data={{
             x: 'x',
-            columns: [
-              ['x', 30, 50, 100, 230, 300, 310],
-              ['data1', 30, 20, 50, 40, 60, 50],
-              ['data2', 200, 130, 90, 240, 130, 220],
-              ['data3', 300, 200, 160, 400, 250, 250]
-            ],
+            columns: stats.columns,
             unload: true,
             names: {
               data1: 'Project 1',
